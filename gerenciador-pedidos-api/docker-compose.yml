@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3.10.5-management
+    container_name: rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: "rabbitmq"
+      RABBITMQ_DEFAULT_PASS: "rabbitmq"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - rabbitmq_logs:/var/log/rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - gerenciador-pedidos-api
+
+  mailhog:
+    image: mailhog/mailhog:latest
+    container_name: mailhog
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+    networks:
+      - gerenciador-pedidos-api
+
+  postgres:
+    image: postgres:15.7
+    restart: unless-stopped
+    container_name: postgres
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+      - "15432:15432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - gerenciador-pedidos-api
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "user@user.com"
+      PGADMIN_DEFAULT_PASSWORD: "pgadmin"
+    ports:
+      - "16543:80"
+    depends_on:
+      - postgres
+    networks:
+      - gerenciador-pedidos-api
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+      - "16379:16379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - gerenciador-pedidos-api
+
+networks:
+  gerenciador-pedidos-api:
+    driver: bridge
+
+volumes:
+    postgres_data:
+    rabbitmq_data:
+    rabbitmq_logs:
+    redis_data:
