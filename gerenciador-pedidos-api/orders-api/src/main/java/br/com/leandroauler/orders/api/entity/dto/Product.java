@@ -1,4 +1,4 @@
-package br.com.leandroauler.orders.api.entity;
+package br.com.leandroauler.orders.api.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

@@ -1,10 +1,8 @@
 package br.com.leandroauler.orders.api.controller;
 
-import br.com.leandroauler.orders.api.entity.Order;
-import br.com.leandroauler.orders.api.entity.Product;
+import br.com.leandroauler.orders.api.entity.dto.Product;
 import br.com.leandroauler.orders.api.entity.Products;
 import br.com.leandroauler.orders.api.entity.dto.ProductDTO;
-import br.com.leandroauler.orders.api.service.OrderService;
 import br.com.leandroauler.orders.api.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

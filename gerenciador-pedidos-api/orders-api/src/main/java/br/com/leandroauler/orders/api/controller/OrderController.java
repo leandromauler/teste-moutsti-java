@@ -1,6 +1,8 @@
 package br.com.leandroauler.orders.api.controller;
 
-import br.com.leandroauler.orders.api.entity.Order;
+import br.com.leandroauler.orders.api.entity.dto.Order;
+import br.com.leandroauler.orders.api.entity.Orders;
+import br.com.leandroauler.orders.api.entity.dto.OrdersDTO;
 import br.com.leandroauler.orders.api.service.OrderService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,10 +15,9 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Tag(name = "Pedidos", description = "Recurso para manipulação de pedidos")
 @RestController
@@ -36,5 +37,11 @@ public class OrderController {
         logger.info("Criando pedido: {}", order.toString());
         order = orderService.queueRequest(order);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
+
+    @GetMapping("/{orderId}")
+    public ResponseEntity<Orders> consultarPedido(@PathVariable UUID orderId) {
+        Orders order = orderService.findById(orderId);
+        return ResponseEntity.ok(order);
     }
 }
